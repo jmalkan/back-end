@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-init-method="init"
+       default-destroy-method="cleanUp"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+                           http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+                           http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+                           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                           http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
+  <!-- Scans within the base package of the application for @Components to configure as beans -->
+  <!-- @Controller, @Service, @Configuration, etc. -->
+  <context:component-scan base-package="com.jiggy" />
+  
+  <!-- Enabling annotation and post processors -->
+  <context:annotation-config />
+  <!-- context:load-time-weaver/-->
+  
+  <!-- support classes without interface -->
+  <!-- aop:aspectj-autoproxy proxy-target-class="true"/-->
+  
+  <!-- MongoDB Set up -->
+  <!-- mongo:mongo id="replicaSetMongo" replica-set="127.0.0.1:27017, localhost:27018"/-->
+  <mongo:mongo host="localhost" port="27017">
+    <mongo:options connections-per-host="8"
+                   threads-allowed-to-block-for-connection-multiplier="4"
+                   connect-timeout="1000"
+                   max-wait-time="1500"
+                   auto-connect-retry="true"
+                   socket-keep-alive="true"
+                   socket-timeout="1500"
+                   slave-ok="true"
+                   write-number="1"
+                   write-timeout="0"
+                   write-fsync="true"/>
+  </mongo:mongo>
+  
+  <mongo:db-factory dbname="backend" mongo-ref="mongo"/>
+  
+  <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+    <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+  </bean>
+  
+  <!-- Use this post processor to translate any MongoExceptions thrown in @Repository annotated classes -->
+  <!-- bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" /-->
+  <!-- MongoDB Set up -->
+  
+  <!-- Data Source -->
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+    <property name="url" value="jdbc:mysql://localhost/backend" />
+    <property name="username" value="root" />
+    <property name="password" value="password" />
+  </bean>
+  
+  
+  <!-- jdbc:embedded-database id="dataSource">
+    <jdbc:script location="classpath:schema.sql"/>
+    <jdbc:script location="classpath:test-data.sql"/>
+  </jdbc:embedded-database-->
+
+  <!-- Hibernate SessionFactory -->
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <!-- property name="packagesToScan" value="com.jiggy.*" />
+    <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" / -->
+    <property name="mappingLocations">
+      <value>/WEB-INF/config/hibernate/*.hbm.xml</value>
+    </property>
+
+    <!--<property name="entityInterceptor"> -->
+    <!--<ref local="auditInterceptor"/> -->
+    <!--</property> -->
+
+    <property name="hibernateProperties">
+      <props>
+        <!-- JDBC -->
+        <prop key="hibernate.jdbc.fetch_size">10</prop>
+        <prop key="hibernate.jdbc.batch_size">10</prop>
+        <prop key="hibernate.default_batch_fetch_size">16</prop>
+
+        <!-- TRANSACTION -->
+        <prop key="hibernate.transaction.auto_close_session">true</prop>
+
+        <!-- SQL DIALECTS -->
+        <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+
+        <!-- CACHE -->
+        <!-- prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</prop>
+        <prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop>
+        <prop key="hibernate.cache.region.jbc2.query.localonly">true</prop>
+        <prop key="hibernate.cache.use_second_level_cache">true</prop>
+        <prop key="hibernate.cache.use_structured_entries">true</prop>
+        <prop key="hibernate.cache.use_query_cache">true</prop>
+        <prop key="hibernate.cache.region_prefix">backend</prop-->
+
+        <!-- STATISTICS - this should not be enabled for production -->
+        <prop key="hibernate.generate_statistics">true</prop>
+
+        <!-- SQL DEBUGGING - this should not be enabled for production -->
+        <!-- prop key="hibernate.show_sql">true</prop>
+        <prop key="hibernate.format_sql">true</prop>
+        <prop key="hibernate.use_sql_comments">true</prop -->
+        <!-- prop key="hibernate.hbm2ddl.auto">update</prop --> <!-- validate | update | create | create-drop -->
+
+        <!-- MISCELLANEOUS -->
+        <prop key="hibernate.query.substitutions">true 1, false 0, Y 'y', N 'n'</prop>
+        <!--prop key="hibernate.current_session_context_class">thread</prop -->
+        <!-- prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop -->
+        <prop key="hibernate.use_identifer_rollback">true</prop>
+        <prop key="hibernate.order_updates">true</prop>
+        <!-- prop key="configurationClass">org.hibernate.cfg.AnnotationConfiguration</prop -->
+      </props>
+    </property>
+    <!-- property name="eventListeners">
+      <map>
+        <entry key="merge">
+          <bean class="org.springframework.orm.hibernate4.support.IdTransferringMergeEventListener" />
+        </entry>
+      </map>
+    </property-->
+  </bean>
+
+  <!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+  <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+
+
+  <!-- the transactional advice (i.e. what 'happens'; see the <aop:advisor/> bean below) -->
+  <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+    <!-- the transactional semantics... -->
+    <tx:attributes>
+      <tx:method name="*" timeout="30" propagation="REQUIRED"/>
+      <!-- tx:method name="find*" read-only="true" timeout="30" propagation="SUPPORTS"/>
+      <tx:method name="create*, update*, delete*" timeout="30" propagation="REQUIRED" rollback-for="DataValidationException"/ -->
+    </tx:attributes>
+  </tx:advice>
+  
+  <!-- Define Interceptors -->
+  <bean id="auditAdvice" class="com.jiggy.base.interceptor.AuditInterceptor" />
+
+  <!-- ensure that the transactional and security advice runs for any execution of an operation defined by the Service interface -->
+  <aop:config>
+    <!-- aop:pointcut id="controllerOperation" expression="execution(public String com..*.service.*(..))"/-->
+    <!-- aop:pointcut id="controllerOperation" expression="within(@org.springframework.stereotype.Service *)"/-->
+    <!--aop:pointcut id="serviceOperation" expression="execution(* com.jiggy.base.service.Service+.*(..))"/ -->
+    <aop:pointcut id="serviceOperation" expression="within(@org.springframework.stereotype.Service *)"/>
+    <!-- aop:advisor advice-ref="securityAdvice" pointcut-ref="serviceOperation"/-->
+    <aop:advisor advice-ref="auditAdvice" pointcut-ref="serviceOperation" order="1"/>
+    <aop:advisor advice-ref="transactionAdvice" pointcut-ref="serviceOperation" order="2"/>
+  </aop:config>
+</beans>

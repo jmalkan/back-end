@@ -1,0 +1,245 @@
+String objectName = "com.phcs.client.CPIndicative";
+
+objectName.lastIndexOf(".");
+
+objectName.substring(objectName.lastIndexOf(".") + 1);
+
+
+try
+{
+   java.util.Date date = java.text.DateFormat.getInstance().parse("01/01/1753 12:0 AM, PDT");
+   System.out.println("Date = " + date + " Time = " + date.getTime());
+   date = java.text.DateFormat.getInstance().parse("02/13/1978 12:0 AM, PDT");
+   System.out.println("Date = " + date + " Time = " + date.getTime());
+   
+   //date = java.text.DateFormat.getInstance().parse("2004-12-27");
+   //System.out.println("Date = " + date + " Time = " + date.getTime());
+   
+   date = new java.text.SimpleDateFormat("yyyy-mm-dd hh:mm:ss").parse("9999-12-31 00:00:00.0");
+   System.out.println("Date = " + date + " Time = " + date.getTime());
+   
+   System.out.println("SybMinDateTimestamp = " + new java.sql.Timestamp(Long.parseLong("-6847786800000")));
+   System.out.println("SybMaxDateTimestamp = " + new java.sql.Timestamp(Long.parseLong("253402232400000")));
+   System.out.println("SybMinDateTimestamp = " + (new java.sql.Timestamp(Long.parseLong("-6847786800000")).toString()));
+}
+catch (java.text.ParseException pex) { pex.printStackTrace(); }
+catch (Exception ex) { ex.printStackTrace(); }
+
+
+String[][] cartoons = { { "Flintstones", "Fred", "Wilma", "Pebbles", "Dino" },
+						{ "Rubbles", "Barney", "Betty", "Bam Bam" },
+						{ "Jetsons", "George", "Jane", "Elroy", "Judy", "Rosie", "Astro" },
+						{ "Scooby Doo Gang", "Scooby Doo", "Shaggy", "Velma", "Fred", "Daphne" }
+					  };
+
+
+for (int i = 0; i < cartoons.length; i++)
+{
+	System.out.print(cartoons[i][0] + ": ");
+	
+	for (int j = 1; j < cartoons[i].length; j++)
+		System.out.println(cartoons[i][j] + " ");
+}
+
+new Double(0);
+
+new Double((double) (0 - 0) / 1000);
+
+
+
+java.util.Calendar calendar = java.util.Calendar.getInstance();
+java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
+
+
+//calendar.setTime(java.text.DateFormat.getInstance().parse(timestamp.toString() + " 12:00 PM"));
+calendar.setTime(new java.sql.Date(timestamp.getTime()));
+
+
+System.out.println(timestamp.getTime());
+System.out.println(new java.sql.Date(timestamp.getTime()));
+
+System.out.println("Month = " + calendar.MONTH + " Day = " + calendar.DATE + " Year = " + calendar.YEAR);
+
+
+
+
+String time = (new java.sql.Timestamp(System.currentTimeMillis())).toString();
+System.out.println(time);
+System.out.println("Month = " + time.substring(5, 7) + " Day = " + time.substring(8, 10) + " Year = " + time.substring(0, 4));
+
+System.out.println(System.currentTimeMillis());
+
+String test = "1000";
+System.out.println("2 char = " + test.substring(0, 2) + " 3 char = " + test.substring(0, 3));
+
+char c;
+int i = 0;
+
+
+while ((char) System.in.read() != 'S')
+{
+   i  = System.in.read(); 
+   c = (char) i;
+   
+   System.out.println( "read: " + c  + " hex value: " + Integer.toString(i,16) ); 
+}
+
+
+
+int type, check = 0;
+java.util.ArrayList list = new java.util.ArrayList();
+list.add("0");
+list.add("1");
+list.add("2");
+
+
+for (int idx = 0; idx < list.size(); idx++)
+{
+   type = Integer.parseInt((String) list.get(idx));
+   
+   System.out.println(type);
+   
+   if (check == type)
+      System.out.println("Match Found");
+}
+
+
+System.out.println("BOSTPPO".substring(4));
+
+
+for (int k = 0; k < 4; k++)
+{
+	java.sql.Timestamp timestamp = (new java.sql.Timestamp(System.currentTimeMillis() + (k * 200)));
+	System.out.println(timestamp);
+}
+
+System.out.println((char) Character.COMBINING_SPACING_MARK);
+System.out.println((char) Character.DASH_PUNCTUATION);
+System.out.println((char) Character.NON_SPACING_MARK);
+System.out.println(((Class) Character.TYPE).toString());
+
+
+
+java.util.ArrayList arrayList = new java.util.ArrayList();
+
+arrayList.add("A");
+arrayList.add("B");
+arrayList.add("C");
+arrayList.add("D");
+arrayList.add("E");
+arrayList.add("F");
+arrayList.add("G");
+arrayList.add("H");
+
+System.out.println("arrayList = " + arrayList);
+
+
+System.out.println(Math.abs((double) 0/60) == Math.round((double) 0/60));
+System.out.println(Math.abs((double) 1/60));
+System.out.println(Math.abs((double) 2/60));
+System.out.println(Math.abs((double) 60/60));
+
+
+
+String errText = "mail.city", MAIL_NAME_PREFIX = "mail.";
+
+if (errText.startsWith(MAIL_NAME_PREFIX)) errText = errText.substring(5);
+System.out.println(" errText = " + errText);
+
+System.out.println("String of " + String.valueOf('N'));
+
+Character character = new Character('N');
+System.out.println("String of " + character);
+
+
+System.out.println(java.text.DateFormat.getDateTimeInstance().format(java.util.Calendar.getInstance().getTime()));
+
+
+
+
+String data = "adding another test note for CP from WPM with more then 100 chars. adding another test note for CP from WPM with more then 100 chars. adding another test note for CP from WPM with more then 100 chars.", dataPart;
+
+System.out.println("datalength=" + data.length());
+
+for (int idx = 0; idx < 1 + (data.length()/100); idx++)
+{
+   
+   if (data.length() > 100)
+   {
+      dataPart = data.substring(0, 100);
+      data = data.substring(100);
+      
+      System.out.println("dataPart=" + dataPart + ", data=" + data +",");
+   }
+}
+
+
+
+String dataXml = "<DataSet><FirstName>Jignesh</FirstName><LastName>Malkan</LastName></DataSet>";
+System.out.println(dataXml.substring(dataXml.indexOf("<LastName>") + 10, dataXml.indexOf("</LastName>")));
+System.out.println(dataXml.substring(dataXml.indexOf("<FirstName>") + 11, dataXml.indexOf("</FirstName>")));
+
+
+String sql = "Testing ?, ?";
+
+String localSql = sql;
+
+localSql = localSql.replace(", ?", "," + "serialNumber");
+localSql = localSql.replace("?", "modelNumber");
+
+System.out.println(localSql);
+
+
+System.out.println("DateTimestamp = " + new java.sql.Timestamp(Long.parseLong("1231527607000")) + ", Date = " + new java.sql.Date(Long.parseLong("1231527607000")));
+System.out.println("DateTimestamp = " + new java.sql.Timestamp(Long.parseLong("1230912539087")) + ", Date = " + new java.sql.Date(Long.parseLong("1230912539087")));
+System.out.println("DateTimestamp = " + new java.sql.Timestamp(Long.parseLong("1230912739196")) + ", Date = " + new java.sql.Date(Long.parseLong("1230912739196")));
+System.out.println("DateTimestamp = " + new java.sql.Timestamp(Long.parseLong("1230912204940")) + ", Date = " + new java.sql.Date(Long.parseLong("1230912204940")));
+System.out.println("DateTimestamp = " + new java.sql.Timestamp(Long.parseLong("1230912289154")) + ", Date = " + new java.sql.Date(Long.parseLong("1230912289154")));
+System.out.println("DateTimestamp = " + new java.sql.Timestamp(Long.parseLong("1230912919399")) + ", Date = " + new java.sql.Date(Long.parseLong("1230912919399")));
+System.out.println("DateTimestamp = " + new java.sql.Timestamp(Long.parseLong("1230911180355")) + " ,Date = " + new java.sql.Date(Long.parseLong("1230911180355")));
+
+System.out.println("ALARM_DIMENSION".toLowerCase());
+
+java.util.Map map = new java.util.HashMap();
+
+map.get(null);
+
+String context = "Tx/Bvo7vg UkUdaEhiDnIrkENtgccJcUEjNI4REf64F9E12uDSccJehxOkwCejMgJVolwFCzBWAbqRss74oMWX24jyipJjn/TP2wcYJGo4T XX6c5XJO2f1AzVMya68qV0ccyx/EmtcR6u9piP8Yv2y9GGE2sWLH";
+System.out.println(java.net.URLEncoder.encode(context));
+System.out.println(context.replace(' ', '+'));
+
+
+System.out.println("Test: Java Hang");
+double d = Double.parseDouble("2.2250738585072012e-308");
+System.out.println("Value: " + d);
+
+
+
+System.out.println("org.id.type".replace('.', '_'));
+
+
+
+
+//String data = "name=MIT+2&path=MIT+1&type=3&id=3";
+String data = "name=MIT+2&path=MIT+1&id=3&type=3";
+int idBeginIndex = data.indexOf("id") + 1;
+int idEndIndex = data.indexOf("&", idBeginIndex);
+System.out.println(idBeginIndex);
+System.out.println(idEndIndex);
+String idNameValuePair = (idEndIndex == -1 ? data.substring(idBeginIndex): data.substring(idBeginIndex, idEndIndex));
+
+String id = idNameValuePair.substring(idNameValuePair.indexOf("=") + 1);
+
+System.out.println(id);
+
+System.out.println(Long.class.getSimpleName());
+
+
+System.out.println(String.format("%s is %d years old, er, young", "Al", 45));
+
+
+System.out.println("http://localhost:8080/nb/service/userOrgProfile/ssoToken".contains("/nb/service/"));
+
+System.out.print(" " + 7 + 2 + " ");
+
+Float f = new Float("12");
