@@ -48,19 +48,15 @@
   <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
     <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
   </bean>
-  
-  <!-- Use this post processor to translate any MongoExceptions thrown in @Repository annotated classes -->
-  <!-- bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" /-->
   <!-- MongoDB Set up -->
   
-  <!-- Data Source -->
+  <!-- MySQL Data Source -->
   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="com.mysql.jdbc.Driver" />
     <property name="url" value="jdbc:mysql://localhost/backend" />
     <property name="username" value="root" />
     <property name="password" value="password" />
   </bean>
-  
   
   <!-- jdbc:embedded-database id="dataSource">
     <jdbc:script location="classpath:schema.sql"/>
