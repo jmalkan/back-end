@@ -37,7 +37,7 @@ public class TodoServiceImpl extends AbstractDBService<Todo> implements TodoServ
 
   @Override
   protected void validateBeforeDelete(final Todo entity) {
-    throw new UnsupportedOperationException();
+    return;
   }
 
   @Override
